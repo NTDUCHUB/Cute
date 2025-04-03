@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hình Lập Phương 3D</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .scene {
+            width: 200px;
+            height: 200px;
+            perspective: 600px;
+        }
+        .cube {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            margin: auto;
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+        .face {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-size: cover;
+            border: 2px solid #000;
+        }
+        .front  { transform: translateZ(75px); background-image: url('nen1.gif'); }
+        .back   { transform: rotateY(180deg) translateZ(75px); background-image: url('nen2.gif'); }
+        .left   { transform: rotateY(-90deg) translateZ(75px); background-image: url('nen3.gif'); }
+        .right  { transform: rotateY(90deg) translateZ(75px); background-image: url('nen4.gif'); }
+        .top    { transform: rotateX(90deg) translateZ(75px); background-image: url('nen5.gif'); }
+        .bottom { transform: rotateX(-90deg) translateZ(75px); background-image: url('nen6.gif'); }
+
+        /* Floating heart images around the cube */
+        .floating {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-size: cover;
+            clip-path: path("M75 15 Q100 -10, 125 15 Q150 40, 125 75 Q100 110, 75 135 Q50 110, 25 75 Q0 40, 25 15 Q50 -10, 75 15 Z"); /* Heart shape */
+            border: 5px solid #ff69b4; /* Thicker pink border around the heart */
+            border-radius: 50%; /* Rounded border for the heart */
+            animation: rotateHearts 10s linear infinite; /* Rotate hearts */
+        }
+
+        /* Các vị trí của trái tim quanh hình lập phương */
+        .floating-front  { transform: translateZ(175px); background-image: url('nen7.gif'); }
+        .floating-back   { transform: rotateY(180deg) translateZ(175px); background-image: url('nen8.gif'); }
+        .floating-left   { transform: rotateY(-90deg) translateZ(175px); background-image: url('nen9.gif'); }
+        .floating-right  { transform: rotateY(90deg) translateZ(175px); background-image: url('nen10.gif'); }
+        .floating-top    { transform: rotateX(90deg) translateZ(175px); background-image: url('nen11.gif'); }
+        .floating-bottom { transform: rotateX(-90deg) translateZ(175px); background-image: url('nen12.gif'); }
+
+        /* Animation cho trái tim xoay quanh */
+        @keyframes rotateHearts {
+            0% {
+                transform: rotateY(0deg);
+            }
+            100% {
+              transform: rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="cube" id="cube">
+            <div class="face front"></div>
+            <div class="face back"></div>
+            <div class="face left"></div>
+            <div class="face right"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
+            <!-- Floating heart images around the cube -->
+            <div class="floating floating-front"></div>
+            <div class="floating floating-back"></div>
+            <div class="floating floating-left"></div>
+            <div class="floating floating-right"></div>
+            <div class="floating floating-top"></div>
+            <div class="floating floating-bottom"></div>
+        </div>
+    </div>
+    <script>
+        let cube = document.getElementById("cube");
+        let isDragging = false;
+        let startX, startY;
+        let rotateX = 0, rotateY = 0;
+
+        document.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            let deltaX = e.clientX - startX;
+            let deltaY = e.clientY - startY;
+            rotateX += deltaY * 0.5;
+            rotateY += deltaX * 0.5;
+            cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+    </script>
+</body>
+</html>
